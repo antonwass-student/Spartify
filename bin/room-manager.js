@@ -2,7 +2,7 @@ var Room = require("../bin/room");
 
 var rooms = [];
 
-var createRoom = function(socket){
+var createRoom = function(socket,callback){
 
     var key = createKey();
 
@@ -75,8 +75,9 @@ module.exports = {
     getAllRooms: null,
     getRoom: getRoom
 }
-
+/*
 var newRoom = createRoom();
 
 rooms.push(newRoom);
 console.log("new room: " + newRoom.getKey());
+    */

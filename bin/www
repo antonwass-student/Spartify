@@ -97,9 +97,8 @@ var RoomManager = require('../bin/room-manager');
 
 
 io.on('connection', function(socket){
+  console.log('Skapar rum...')
   var room = RoomManager.createRoom(socket);
-  socket.on('authenticate', function(data){
-    console.log('we received data!');
-  });
-  console.log('hej');
+
+  console.log('Client connected!');
 });

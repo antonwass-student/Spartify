@@ -1,5 +1,6 @@
 var SpotifyWebApi = require('spotify-web-api-node');
-var net = require('net');
+//var net = require('net');
+var io = require('socket.io');
 
 var method = Room.prototype;
 
@@ -8,13 +9,15 @@ function Room(key, socket){
     this._socket = socket;
     this._spotifyApi = new SpotifyWebApi();
 
-    initSocket();
+
+
+    initSocket.call(this);
+    socket.emit('welcome','');
 }
 
 
 function initSocket(){
     var socket = this._socket;
-
     socket.on('authenticate', function(data){
         console.log('received data: ' + data);
 
@@ -29,7 +32,7 @@ function initSocket(){
         };
 
         socket.emit('room',JSON.stringify(response));
-
+        console.log(this._key);
         this._spotifyApi.setAccessToken(this._access_token);
 
     });

@@ -1,6 +1,6 @@
 var net = require('net');
-var server = require('../bin/www').server;
-var io = require('socket.io')(server);
+var io = require('../bin/www').io;
+
 var RoomManager = require('../bin/room-manager');
 
 io.on('connection', function(socket){

@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var pr = require('../bin/partyroom');
+var pr = require('../bin/room-manager');
 
 
 /* GET home page. */

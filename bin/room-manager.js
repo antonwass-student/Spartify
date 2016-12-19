@@ -1,14 +1,18 @@
+var Room = require("../bin/room");
+
 var rooms = [];
 
-var createRoom = function(){
+var createRoom = function(socket){
 
     var key = createKey();
 
-    var room = {
-        key: key
-    };
+    var room = new Room(key, socket);
 
     rooms.push(room);
+
+    setTimeout(function(){
+        room.close();
+    }, 43200000); //12 hours
 
     return room;
 
@@ -16,7 +20,7 @@ var createRoom = function(){
 
 var closeRoom = function(key){
     rooms.forEach(function(item, index){
-        if(item.key === key){
+        if(item.getKey() === key){
             rooms.remove(item);
         }
     });
@@ -26,7 +30,7 @@ var closeRoom = function(key){
 var getRoom = function(key){
     var result = null;
     rooms.forEach(function(item, index){
-        if(item.key === key){
+        if(item.getKey() === key){
             result = item;
             console.log('found item');
         }
@@ -70,10 +74,9 @@ module.exports = {
     closeRoom: closeRoom,
     getAllRooms: null,
     getRoom: getRoom
-
 }
 
 var newRoom = createRoom();
 
 rooms.push(newRoom);
-console.log("new room: " + newRoom.key);
+console.log("new room: " + newRoom.getKey());

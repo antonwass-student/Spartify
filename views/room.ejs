@@ -2,6 +2,8 @@
 <html>
   <head>
     <title><%= title %></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.0/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <link rel="stylesheet" href="/stylesheets/style.css">
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
@@ -11,10 +13,44 @@
 
     <!-- Latest compiled and minified JavaScript -->
     <script src="/javascripts/bootstrap/bootstrap.min.js"></script>
+
   </head>
   <body>
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
+
+    <div ng-app="myApp" ng-controller="myCtrl">
+
+      <input type="text" ng-model="searchTerm" ng-change="searchTracks()">
+      <button onclick="getSomeJson()">Search</button>
+      <ul>
+        <li ng-repeat="t in songs">{{t.name}} ({{t.popularity}})</li>
+      </ul>
+    </div>
+
+
+
+    <script>
+
+      var app = angular.module('myApp', []);
+
+      app.controller('myCtrl', function($scope){
+        $scope.searchTerm = '';
+        $scope.songs = [];
+
+
+        $scope.searchTracks = function(){
+          $.ajax({
+            url: '/api/search/'+$scope.searchTerm,
+            type: 'GET',
+            dataType: 'json',
+            success: function(data){
+              $scope.songs = data.tracks.items;
+            }
+          });
+        }
+      });
+    </script>
   
   </body>
 </html>

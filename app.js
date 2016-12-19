@@ -10,6 +10,8 @@ var users = require('./routes/users');
 var room = require('./routes/room');
 var config = require('./routes/config');
 
+var roomhost = require('./bin/roomhost');
+
 var app = express();
 
 // view engine setup

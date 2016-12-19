@@ -90,6 +90,16 @@ function onListening() {
   debug('Listening on ' + bind);
 }
 
-module.exports = {
-   io:io
-}
+/**
+ *  listen to socket.io connections
+ */
+var RoomManager = require('../bin/room-manager');
+
+
+io.on('connection', function(socket){
+  var room = RoomManager.createRoom(socket);
+  socket.on('authenticate', function(data){
+    console.log('we received data!');
+  });
+  console.log('hej');
+});

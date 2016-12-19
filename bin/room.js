@@ -8,43 +8,32 @@ function Room(key, socket){
     this._socket = socket;
     this._spotifyApi = new SpotifyWebApi();
 
-    //initSocket();
+    initSocket();
 }
 
 
 function initSocket(){
     var socket = this._socket;
-    socket.setEncoding('utf8');
 
-    socket.on('data', function(data){
+    socket.on('authenticate', function(data){
         console.log('received data: ' + data);
 
         var msg = JSON.parse(data);
 
-        switch(msg.type){
-            case 'authenticate':
-                console.log('Authenticating client with token: ' + msg.access_token);
+        console.log('Authenticating client with token: ' + msg.access_token);
 
-                this._access_token = msg.access_token;
+        this._access_token = msg.access_token;
 
-                var response = {
-                    type : 'room',
-                    key : this._key
-                };
+        var response = {
+            key : this._key
+        };
 
-                socket.write(JSON.stringify(response));
+        socket.emit('room',JSON.stringify(response));
 
-                this._spotifyApi.setAccessToken(this._access_token);
+        this._spotifyApi.setAccessToken(this._access_token);
 
-                break;
-
-            case 'something':
-                break;
-            default:
-                console.log('Could not interpret message', data);
-                break;
-        }
     });
+
 }
 
 method.getSpotifyApi = function(){

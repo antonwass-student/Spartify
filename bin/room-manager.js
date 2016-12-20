@@ -96,7 +96,7 @@ module.exports = {
     playSongInRoom: playSongInRoom
 }
 
-var newRoom = createRoom();
+//var newRoom = createRoom();
 
-rooms.push(newRoom);
-console.log("new room: " + newRoom.getKey());
+//rooms.push(newRoom);
+//console.log("new room: " + newRoom.getKey());

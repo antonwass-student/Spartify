@@ -9,9 +9,9 @@ function Room(key, socket){
     this._playlist = [];
 
 
-    //this.initSocket();
+    this.initSocket();
 
-    //socket.emit('welcome','');
+    socket.emit('welcome','');
 }
 
 method.initSocket = function () {

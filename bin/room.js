@@ -9,15 +9,15 @@ function Room(key, socket){
     this._socket = socket;
     this._spotifyApi = new SpotifyWebApi();
 
+    this.initSocket();
 
-
-    initSocket.call(this);
     socket.emit('welcome','');
 }
 
-
-function initSocket(){
+method.initSocket = function () {
     var socket = this._socket;
+    var key = this._key;
+    var spotifyApi = this._spotifyApi;
     socket.on('authenticate', function(data){
         console.log('received data: ' + data);
 
@@ -28,16 +28,15 @@ function initSocket(){
         this._access_token = msg.access_token;
 
         var response = {
-            key : this._key
+            key : key
         };
 
         socket.emit('room',JSON.stringify(response));
-        console.log(this._key);
-        this._spotifyApi.setAccessToken(this._access_token);
+        console.log(key);
+        spotifyApi.setAccessToken(msg.access_token);
 
     });
-
-}
+};
 
 method.getSpotifyApi = function(){
     return this._spotifyApi;

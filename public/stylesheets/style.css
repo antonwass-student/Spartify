@@ -5,3 +5,12 @@ body {
 a {
   color: #00B7FF;
 }
+
+table{
+  table-layout:fixed;
+}
+
+td{
+  white-space:nowrap;
+  overflow:hidden;
+}

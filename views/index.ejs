@@ -6,26 +6,62 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <link rel="stylesheet" href="/stylesheets/style.css">
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="/stylesheets/bootstrap.css">
 
     <!-- Optional theme -->
     <link rel="stylesheet" href="/stylesheets/bootstrap-theme.min.css">
 
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <!-- Latest compiled and minified JavaScript -->
     <script src="/javascripts/bootstrap/bootstrap.min.js"></script>
     <script src="/javascripts/index.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <style>
+      body{
+        background: #a0ff9e;
+        background: -moz-radial-gradient(center, ellipse cover, #a0ff9e 0%, #a0ff9e 0%, #6ae368 100%);
+        background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, #a0ff9e), color-stop(0%, #a0ff9e), color-stop(100%, #6ae368));
+        background: -webkit-radial-gradient(center, ellipse cover, #a0ff9e 0%, #a0ff9e 0%, #6ae368 100%);
+        background: -o-radial-gradient(center, ellipse cover, #a0ff9e 0%, #a0ff9e 0%, #6ae368 100%);
+        background: -ms-radial-gradient(center, ellipse cover, #a0ff9e 0%, #a0ff9e 0%, #6ae368 100%);
+        background: radial-gradient(ellipse at center, #a0ff9e 0%, #a0ff9e 0%, #6ae368 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a0ff9e', endColorstr='#6ae368', GradientType=1 );
+      }
+    </style>
   </head>
-  <body>
-    <div class="container">
-      <h1><%= title %></h1>
-      <p>Welcome to <%= title %></p>
-      <p>Create party rooms with friends!</p>
+  <body > <!-- style="background: linear-gradient(to left, #67B26F , #4ca2cd);" -->
+    <div class="container text-center" style="font-family: 'Raleway', sans-serif;">
 
-      <input id="room_id" type="text" placeholder="room id...">
-      <button onclick="enterRoom(document.getElementById('room_id').value);">Enter</button><br><br>
+        <h1 style="font-size: 64px; padding-bottom: 20px"><%= title %></h1>
+        <p>Create party rooms with friends!</p>
+        <p>Download the app <span style="font-style: italic">Spartify</span> to host a party!</p>
 
-      <input type="password" placeholder="admin secret...">
-      <button>Enter</button>
+
+      <div style="padding-top: 10%">
+        <label for="room_id">Room id</label>
+        <div class="form-inline form-group">
+            <div class="input-group">
+                <input class="form-control" id="room_id" type="text" placeholder="Example: HQ5F2">
+                <span class="input-group-btn">
+                 <button class="btn btn-success" onclick="enterRoom(document.getElementById('room_id').value);">Enter</button>
+              </span>
+            </div>
+        </div>
+
+        <p>Or</p>
+
+        <div class="form-inline form-group">
+          <div class="input-group">
+            <input class="form-control" type="password" placeholder="Admin secret...">
+            <span class="input-group-btn">
+          <button class="btn btn-default">Enter</button>
+              </span>
+          </div>
+        </div>
+      </div>
+
+
     </div>
 
     <div>

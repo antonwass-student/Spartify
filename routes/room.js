@@ -15,6 +15,7 @@ router.get('/:roomId', function (req, res, next) {
     }else{
         res.redirect('/');
     }
+
 });
 
 module.exports = router;

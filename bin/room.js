@@ -36,13 +36,6 @@ method.initSocket = function () {
         console.log(key);
         spotifyApi.setAccessToken(msg.access_token);
 
-        var trackJson = {
-            track: "spotify:track:0WE8YTl6GAVHnkfvMfci98"
-        };
-        var s = JSON.stringify(trackJson);
-        console.log('Sending song: ' + s)
-        socket.emit('play song', s);
-
     });
 };
 

@@ -1,6 +1,19 @@
 var Room = require("../bin/room");
+var io = null;
+var cio = null;
+var hio = null;
 
 var rooms = [];
+
+
+
+var setClientChannel = function(_cio){
+    cio = _cio;
+}
+var setHostChannel = function(_hio){
+    hio = _hio;
+}
+
 
 var createRoom = function(socket,callback){
 
@@ -61,7 +74,7 @@ function checkIfIdExist(id){
 
 function generateId(){
     var text = "";
-    var possible = "abcdefghijklmnopqrstuvwxyz0123456789";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
     for( var i=0; i < 5; i++ )
         text += possible.charAt(Math.floor(Math.random() * possible.length));
@@ -70,14 +83,15 @@ function generateId(){
 }
 
 module.exports = {
+    setClientChannel: setClientChannel,
+    setHostChannel: setHostChannel,
     createRoom: createRoom,
     closeRoom: closeRoom,
     getAllRooms: null,
     getRoom: getRoom
 }
-/*
+
 var newRoom = createRoom();
 
 rooms.push(newRoom);
 console.log("new room: " + newRoom.getKey());
-    */

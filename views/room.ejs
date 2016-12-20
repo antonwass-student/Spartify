@@ -4,6 +4,7 @@
     <title><%= title %></title>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.0/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
     <link rel="stylesheet" href="/stylesheets/style.css">
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
@@ -21,23 +22,68 @@
 
     <div ng-app="myApp" ng-controller="myCtrl">
 
+      <button ng-click="enqueueSong()">Queue song</button>
+
       <input type="text" ng-model="searchTerm" ng-change="searchTracks()">
-      <button onclick="getSomeJson()">Search</button>
       <ul>
         <li ng-repeat="t in songs">{{t.name}} ({{t.popularity}})</li>
       </ul>
     </div>
 
-
-
     <script>
 
+      var loc_arr = window.location.href.split('/');
+      var room = loc_arr[loc_arr.length-1];
+
+      var socket = null;
+
       var app = angular.module('myApp', []);
+
+
 
       app.controller('myCtrl', function($scope){
         $scope.searchTerm = '';
         $scope.songs = [];
+        $scope.name = 'Unknown';
 
+
+        $scope.enqueueSong = function(){
+          var track = 'spotify:track:1Wa9LB6g952wVffdcp7Wwd';
+
+          $.ajax({
+            url: '/api/queue',
+            type: 'POST',
+            dataType: 'json',
+            success: function(data){
+              console.log('song was added to queue');
+            },
+            data:{
+              room: room,
+              track: track
+            }
+          });
+        }
+
+        $scope.connectToWS = function(){
+          var socket = io('/clients');
+
+          socket.emit('join', room);
+
+          socket.on('news', function(data){
+            console.log('news: ' + data);
+          })
+        }
+
+        $scope.setName = function(){
+          $.ajax({
+            url: '/api/search/'+$scope.searchTerm,
+            type: 'POST',
+            dataType: 'json',
+            success: function(data){
+
+            }
+          });
+        };
 
         $scope.searchTracks = function(){
           $.ajax({
@@ -46,9 +92,13 @@
             dataType: 'json',
             success: function(data){
               $scope.songs = data.tracks.items;
+              $scope.$apply();
             }
           });
-        }
+        };
+
+
+        $scope.connectToWS();
       });
     </script>
   

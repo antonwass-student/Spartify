@@ -20,6 +20,7 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
+
 var io = require('socket.io')(server);
 
 /**
@@ -90,15 +91,11 @@ function onListening() {
   debug('Listening on ' + bind);
 }
 
+
 /**
- *  listen to socket.io connections
+ * Start host server
  */
-var RoomManager = require('../bin/room-manager');
 
+module.exports = io;
 
-io.on('connection', function(socket){
-  console.log('Skapar rum...')
-  var room = RoomManager.createRoom(socket);
-
-  console.log('Client connected!');
-});
+require('../bin/host-server');

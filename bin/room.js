@@ -46,6 +46,10 @@ method.enqueueSong = function(song){
 
 }
 
+method.getHost = function(){
+    return this._socket;
+}
+
 method.getSpotifyApi = function(){
     return this._spotifyApi;
 };

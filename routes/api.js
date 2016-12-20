@@ -31,6 +31,7 @@ router.post('/queue', function(req, res, next){
     var room = pr.getRoom(room_key);
 
     room.enqueueSong(song);
+    room.playSongInRoom(room, song);
 
     res.setHeader('Content-Type', 'application/json');
 

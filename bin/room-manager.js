@@ -5,7 +5,11 @@ var hio = null;
 
 var rooms = [];
 
+var playSongInRoom = function(roomKey, track){
+    var room = getRoom(roomKey);
 
+    room.getHost().emit('play song', JSON.stringify({track:track}));
+}
 
 var setClientChannel = function(_cio){
     cio = _cio;
@@ -88,7 +92,8 @@ module.exports = {
     createRoom: createRoom,
     closeRoom: closeRoom,
     getAllRooms: null,
-    getRoom: getRoom
+    getRoom: getRoom,
+    playSongInRoom: playSongInRoom
 }
 
 var newRoom = createRoom();

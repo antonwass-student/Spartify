@@ -13,6 +13,7 @@ var users = require('./routes/users');
 var room = require('./routes/room');
 var config = require('./routes/config');
 var api = require('./routes/api');
+var show = require('./routes/show');
 
 
 // view engine setup
@@ -37,6 +38,7 @@ app.use('/users', users);
 app.use('/room', room);
 app.use('/config', config);
 app.use('/api', api);
+app.use('/show',show);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

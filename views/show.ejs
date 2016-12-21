@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Show: <%= title %></title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.0/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="/stylesheets/bootstrap.css">
+
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="/stylesheets/bootstrap-theme.min.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="/javascripts/bootstrap/bootstrap.min.js"></script>
+  <script src="/javascripts/index.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+  <style>
+    body{
+      background: #a0ff9e;
+      background: -moz-radial-gradient(center, ellipse cover, #a0ff9e 0%, #a0ff9e 0%, #6ae368 100%);
+      background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, #a0ff9e), color-stop(0%, #a0ff9e), color-stop(100%, #6ae368));
+      background: -webkit-radial-gradient(center, ellipse cover, #a0ff9e 0%, #a0ff9e 0%, #6ae368 100%);
+      background: -o-radial-gradient(center, ellipse cover, #a0ff9e 0%, #a0ff9e 0%, #6ae368 100%);
+      background: -ms-radial-gradient(center, ellipse cover, #a0ff9e 0%, #a0ff9e 0%, #6ae368 100%);
+      background: radial-gradient(ellipse at center, #a0ff9e 0%, #a0ff9e 0%, #6ae368 100%);
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a0ff9e', endColorstr='#6ae368', GradientType=1 );
+    }
+  </style>
+</head>
+  <body > <!-- style="background: linear-gradient(to left, #67B26F , #4ca2cd);" -->
+      <div class="container text-center" style="font-family: 'Raleway', sans-serif;">
+
+        <h1 style="font-size: 64px; padding-bottom: 20px">Spartify</h1>
+        <h3>Join this room on http://server.com/</h3>
+        <h3 >Room id: <p style="font-size: 64px;"> <%= title %></p></h3>
+
+        <div style="padding-top: 5%">
+          <div class="row">
+            <div class="col-md-8">
+              <div class="panel panel-default">
+                <div class="panel-body">
+                  <div id="now-playing">
+                    <div class="media">
+                      <div class="media-left">
+                        <img class="media-object" style="width: 200px;height: 200px" src="https://i.scdn.co/image/3ae4a2a9a3db9b5532acccf179add53ac198b67b" alt="...">
+                      </div>
+                      <div class="media-body" style="padding-top: 5%">
+                        <h1 class="media-heading">CURRENT PLAYING TRACK</h1>
+                        <h3>ARTISTENS NAMN</h3>
+                        <h4>ALBUM</h4>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="col-md-4">
+              <div class="row" style="padding-top: 5%; text-align: left">
+                <h2><span class="glyphicon glyphicon-user"></span> 1337 people in this room</h2>
+              </div>
+              <div class="row" style="padding-top: 5%; text-align: left">
+                <h2><span class="glyphicon glyphicon-star"></span> 1337 total votes</h2>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" style="padding-top: 1%">
+            <h1><span class="glyphicon glyphicon-list"></span> Current queue</h1>
+            <h4>Top 10</h4>
+          </div>
+          <div class="row">
+            <table class="table table-striped ">
+              <th style="text-align:center;vertical-align:middle;">Cover</th>
+              <th style="text-align:center;vertical-align:middle;">Track</th>
+              <th style="text-align:center;vertical-align:middle;">Artist</th>
+              <th style="text-align:center;vertical-align:middle;">Votes</th>
+              <tr>
+                <td style="width: auto;height: auto" ><img style="width: 64px;height: 64px" src="https://i.scdn.co/image/3ae4a2a9a3db9b5532acccf179add53ac198b67b"></img></td>
+                <td style="text-align:center;vertical-align:middle;">Bangarang</td>
+                <td style="text-align:center;vertical-align:middle;"><span ng-repeat="a in t.artists">Skrillex</span></td>
+                <td style="text-align:center;vertical-align:middle;">1337</td>
+              </tr>
+              <tr>
+                <td><img style="width: 64px;height: 64px" src="https://i.scdn.co/image/3ae4a2a9a3db9b5532acccf179add53ac198b67b"></img></td>
+                <td style="text-align:center;vertical-align:middle;">Bangarang</td>
+                <td style="text-align:center;vertical-align:middle;"><span ng-repeat="a in t.artists">Skrillex</span></td>
+                <td style="text-align:center;vertical-align:middle;">1337</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+  </body>
+</html>

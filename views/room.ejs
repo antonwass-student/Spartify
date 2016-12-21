@@ -14,36 +14,54 @@
 
     <!-- Latest compiled and minified JavaScript -->
     <script src="/javascripts/bootstrap/bootstrap.min.js"></script>
-
+    <style>
+      body{
+        background: #a0ff9e;
+        background: -moz-radial-gradient(center, ellipse cover, #a0ff9e 0%, #a0ff9e 0%, #6ae368 100%);
+        background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, #a0ff9e), color-stop(0%, #a0ff9e), color-stop(100%, #6ae368));
+        background: -webkit-radial-gradient(center, ellipse cover, #a0ff9e 0%, #a0ff9e 0%, #6ae368 100%);
+        background: -o-radial-gradient(center, ellipse cover, #a0ff9e 0%, #a0ff9e 0%, #6ae368 100%);
+        background: -ms-radial-gradient(center, ellipse cover, #a0ff9e 0%, #a0ff9e 0%, #6ae368 100%);
+        background: radial-gradient(ellipse at center, #a0ff9e 0%, #a0ff9e 0%, #6ae368 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a0ff9e', endColorstr='#6ae368', GradientType=1 );
+      }
+    </style>
   </head>
   <body>
 
 
     <div ng-app="myApp" ng-controller="myCtrl">
+      <div class="text-center">
+        <h1><%= title %></h1>
+        <p>Welcome to <%= title %></p>
+      </div>
 
-
-
-      <div class="container">
+      <div style="padding-top: 5%">
         <div class="row">
-          <div class="col-lg-12">
-            <h1><%= title %></h1>
-            <p>Welcome to <%= title %></p>
-            <img style="width:100px; height:100px;" src="{{trackMouseover.album.images[0].url}}">
+          <div class="col-md-2"></div>
+          <div class="col-md-6">
+            <input class="form-control" type="text" ng-model="searchTerm" ng-change="searchTracks()" placeholder="Type to search...">
+          </div>
+          <div class="col-md-4">
+            <p><span style="font-size: 24px">Queue</span> - click to vote</p>
+
           </div>
         </div>
 
         <div class="row">
-          <div class="col-lg-6">
-            <input type="text" ng-model="searchTerm" ng-change="searchTracks()" placeholder="search...">
-          </div>
-          <div class="col-lg-6">
-            <h3>Queue</h3>
+          <div class="col-md-2 text-center">
+            <div class="thumbnail">
+              <img style="width:200px; height:200px;" src="{{trackMouseover.album.images[0].url}}">
+              <div class="caption">
+                <h3 style="text-align: left"><span class="glyphicon glyphicon-music"></span> {{trackMouseover.name}}</h3>
+                <p style="text-align: left"><span class="glyphicon glyphicon-user"></span> {{trackMouseover.artists[0].name}}</p>
+                <p style="text-align: left"><span class="glyphicon glyphicon-cd"></span> {{trackMouseover.album.name}}</p>
+              </div>
+            </div>
           </div>
 
-        </div>
-        <div class="row">
-          <div class="col-lg-6">
-            <table class="table table-striped table-bordered table-hover">
+          <div class="col-md-6">
+            <table class="table table-striped table-hover">
               <th style="width:30%;">Title</th>
               <th style="width:30%">Artist</th>
               <th style="width:10%">Pop</th>
@@ -57,7 +75,7 @@
             </table>
           </div>
 
-          <div class="col-lg-6">
+          <div class="col-md-4">
             <table class="table table-striped table-bordered table-hover">
               <th style="width:30%;">Title</th>
               <th style="width:30%">Artist</th>
@@ -71,6 +89,7 @@
               </tr>
             </table>
           </div>
+
         </div>
       </div>
     </div>

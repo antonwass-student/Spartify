@@ -4,6 +4,7 @@ var pr = require('../bin/room-manager');
 
 /* GET home page. */
 
+/*tillfällig*/
 router.get('/', function (req,res,next) {
    res.render('show',{title: 'ABC123'})
 });

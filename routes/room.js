@@ -3,6 +3,10 @@ var router = express.Router();
 var pr = require('../bin/room-manager');
 
 /* GET home page. */
+router.get('/', function (req, res, next) {
+   res.render('room', {title:'Room XXXX'})
+});
+
 router.get('/:roomId', function (req, res, next) {
     var key = req.params.roomId;
 

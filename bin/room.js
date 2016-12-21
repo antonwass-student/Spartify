@@ -2,48 +2,53 @@ var SpotifyWebApi = require('spotify-web-api-node');
 
 var method = Room.prototype;
 
-function Room(key, socket){
+function Room(client_io, key, socket, msg){
+    this._client_io = client_io;
     this._key = key;
     this._socket = socket;
     this._spotifyApi = new SpotifyWebApi();
     this._playlist = [];
+    this._currentSong = null;
     this._counter = 0;
+    this._spotifyApi.setAccessToken(msg.access_token);
 
 
-    this.initSocket();
+    socket.emit('room',JSON.stringify({key:key}));
+    console.log('A new room was opened with key: ', key);
 
-    socket.emit('welcome','');
+    this.initSocket(socket);
 }
 
-method.initSocket = function () {
-    var socket = this._socket;
-    var key = this._key;
-    var spotifyApi = this._spotifyApi;
+method.initSocket = function(socket){
+    socket.on('song ended', ()=> this.playNextSong());
+}
 
-    socket.on('authenticate', function(data){
-        console.log('received data: ' + data);
+method.playNextSong = function(){
+    var playlist = this._playlist;
 
-        var msg = JSON.parse(data);
+    if(playlist.length>0){
+        var currentSong = playlist[0];
+        this._currentSong = currentSong;
 
-        console.log('Authenticating client with token: ' + msg.access_token);
+        playlist.splice(0,1);
 
-        this._access_token = msg.access_token;
+        this._socket.emit('play song', JSON.stringify({track:currentSong.song.uri}));
 
-        var response = {
-            key : key
-        };
+        this._client_io.emit('playlist updated');
 
-        socket.emit('room',JSON.stringify(response));
-        console.log(key);
-        spotifyApi.setAccessToken(msg.access_token);
-
-    });
-
-    socket.on('song ended', function(){
-        //var next_track = null;
-        //socket.emit('play song', next);
-    });
+    }else{
+        this._currentSong = null;
+    }
 };
+
+method.setHost = function(socket){
+    this._socket = socket;
+    method.initSocket(socket);
+}
+
+method.setAccessToken = function(token){
+    this._spotifyApi.setAccessToken(token);
+}
 
 method.voteSong = function(id, voter){
     var playlist = this._playlist;
@@ -69,6 +74,7 @@ method.voteSong = function(id, voter){
 
 method.enqueueSong = function(song){
     var playlist = this._playlist;
+    var currentsong = this._currentSong;
 
     var trackObj = {
         id:this._counter++,
@@ -80,6 +86,10 @@ method.enqueueSong = function(song){
     playlist.push(trackObj);
 
     playlist.sort(function(a,b){ var c = b.votes - a.votes; return c;});
+
+    if(currentsong === null){
+        this.playNextSong();
+    }
 };
 
 method.getPlaylist = function(){

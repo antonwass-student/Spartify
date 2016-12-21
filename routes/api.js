@@ -38,10 +38,6 @@ router.post('/queue', function(req, res, next){
         throw err;
     });
 
-
-    pr.playSongInRoom(room_key, song_uri);
-    console.log('song played');
-
     res.setHeader('Content-Type', 'application/json');
 
     res.send({response:'Song successfully added to queue'});
@@ -61,11 +57,19 @@ router.post('/vote', function(req, res, next){
 router.get('/playlist/:room', function(req, res, next){
     var room_key = req.params.room;
 
-    var playlist = pr.getRoom(room_key).getPlaylist();
+    var room = pr.getRoom(room_key);
 
-    res.setHeader('Content-Type', 'application/json');
+    if(room != null){
+        var playlist = room.getPlaylist();
 
-    res.send(JSON.stringify(playlist));
+        res.setHeader('Content-Type', 'application/json');
+
+        res.send(JSON.stringify(playlist));
+    }else{
+        res.status(404).send('Room not found.');
+    }
+
+
 });
 
 

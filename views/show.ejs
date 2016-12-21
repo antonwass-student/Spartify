@@ -80,7 +80,7 @@
               <th style="text-align:center;vertical-align:middle;">Artist</th>
               <th style="text-align:center;vertical-align:middle;">Votes</th>
 
-              <tr ng-repeat="t in playlist" ng-click="voteSong(t.id)">
+              <tr ng-repeat="t in playlist">
                 <td style="width: auto;height: auto" ><img style="width: 64px;height: 64px" src="{{t.album.images[0].url}}"></img></td>
                 <td style="text-align:center;vertical-align:middle;">{{t.song.name}}</td>
                 <td style="text-align:center;vertical-align:middle;"><span ng-repeat="a in t.song.artists">{{a.name}}, </span></td>
@@ -91,89 +91,61 @@
         </div>
       </div>
   </div>
+  <script>
+
+      var loc_arr = window.location.href.split('/');
+      var room = loc_arr[loc_arr.length-1];
+      console.log('Showing room: ' + room);
+
+      var socket = null;
+
+      var app = angular.module('myApp', []);
+
+
+
+      app.controller('myCtrl', function($scope){
+          $scope.searchTerm = '';
+          $scope.songs = [];
+          $scope.playlist = [];
+          $scope.name = 'Unknown';
+          $scope.trackMouseover = {};
+
+
+          $scope.setMouseover = function(track){
+              $scope.trackMouseover = track;
+          };
+
+          $scope.getPlaylist = function(){
+              $.ajax({
+                  url: '/api/playlist/'+room,
+                  type: 'GET',
+                  dataType: 'json',
+                  success: function(data){
+                      console.dir(data);
+                      $scope.playlist = data;
+                      $scope.$apply();
+                  }
+              });
+          };
+
+          $scope.connectToWS = function(){
+              var socket = io('/clients');
+
+              socket.emit('join', room); // ÄNDRA TILL TYP 'SPECTATE' room
+
+              socket.on('playlist updated', function(data){
+                  console.log('Server says that playlist has been updated. Pulling...');
+                  $scope.getPlaylist();
+              })
+          };
+
+          $scope.connectToWS();
+          $scope.getPlaylist();
+      });
+
+
+  </script>
   </body>
 
-<script>
 
-    var loc_arr = window.location.href.split('/');
-    var room = loc_arr[loc_arr.length-1];
-
-    var socket = null;
-
-    var app = angular.module('myApp', []);
-
-
-
-    app.controller('myCtrl', function($scope){
-        $scope.searchTerm = '';
-        $scope.songs = [];
-        $scope.playlist = [];
-        $scope.name = 'Unknown';
-        $scope.trackMouseover = {};
-
-
-        $scope.setMouseover = function(track){
-            $scope.trackMouseover = track;
-        };
-
-        $scope.getPlaylist = function(){
-            $.ajax({
-                url: '/api/playlist/'+room,
-                type: 'GET',
-                dataType: 'json',
-                success: function(data){
-                    console.dir(data);
-                    $scope.playlist = data;
-                    $scope.$apply();
-                }
-            });
-        };
-
-        $scope.connectToWS = function(){
-            var socket = io('/clients');
-
-            socket.emit('join', room);
-
-            socket.on('playlist updated', function(data){
-                console.log('Server says that playlist has been updated. Pulling...');
-                $scope.getPlaylist();
-            })
-        }
-
-        $scope.setName = function(){
-            $.ajax({
-                url: '/api/search/'+$scope.searchTerm,
-                type: 'POST',
-                dataType: 'json',
-                success: function(data){
-
-                }
-            });
-        };
-
-        $scope.searchTracks = function(){
-
-            if($scope.searchTerm === ''){
-                $scope.songs = [];
-                $scope.$apply();
-            }else{
-                $.ajax({
-                    url: '/api/search/'+$scope.searchTerm,
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function(data){
-                        $scope.songs = data.tracks.items;
-                        $scope.$apply();
-                        console.log(data);
-                    }
-                });
-            }
-        };
-
-        $scope.connectToWS();
-        $scope.getPlaylist();
-    });
-
-
-</script>
 </html>

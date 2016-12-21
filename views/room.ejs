@@ -14,6 +14,7 @@
 
     <!-- Latest compiled and minified JavaScript -->
     <script src="/javascripts/bootstrap/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
     <style>
       body{
         background: #a0ff9e;
@@ -30,7 +31,7 @@
   <body>
 
 
-    <div ng-app="myApp" ng-controller="myCtrl">
+    <div ng-app="myApp" ng-controller="myCtrl" style="font-family: 'Raleway', sans-serif;">
       <div class="text-center">
         <h1><%= title %></h1>
         <p>Welcome to <%= title %></p>
@@ -69,7 +70,7 @@
               <tr ng-repeat="t in songs" ng-click="enqueueSong(t.uri)" ng-mouseover="setMouseover(t)">
                 <td>{{t.name}}</td>
                 <td><span ng-repeat="a in t.artists">{{a.name}}, </span></td>
-                <td><progress style="width:100%;" max="100" value="{{t.popularity}}"></progress></td>
+                <td><progress  style="width:100%;" max="100" value="{{t.popularity}}"></progress></td>
                 <td style="text-align:right;">{{msToMMSS(t.duration_ms)}}</td>
               </tr>
             </table>

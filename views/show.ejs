@@ -78,21 +78,100 @@
               <th style="text-align:center;vertical-align:middle;">Track</th>
               <th style="text-align:center;vertical-align:middle;">Artist</th>
               <th style="text-align:center;vertical-align:middle;">Votes</th>
-              <tr>
-                <td style="width: auto;height: auto" ><img style="width: 64px;height: 64px" src="https://i.scdn.co/image/3ae4a2a9a3db9b5532acccf179add53ac198b67b"></img></td>
-                <td style="text-align:center;vertical-align:middle;">Bangarang</td>
-                <td style="text-align:center;vertical-align:middle;"><span ng-repeat="a in t.artists">Skrillex</span></td>
-                <td style="text-align:center;vertical-align:middle;">1337</td>
-              </tr>
-              <tr>
-                <td><img style="width: 64px;height: 64px" src="https://i.scdn.co/image/3ae4a2a9a3db9b5532acccf179add53ac198b67b"></img></td>
-                <td style="text-align:center;vertical-align:middle;">Bangarang</td>
-                <td style="text-align:center;vertical-align:middle;"><span ng-repeat="a in t.artists">Skrillex</span></td>
-                <td style="text-align:center;vertical-align:middle;">1337</td>
+
+              <tr ng-repeat="t in playlist" ng-click="voteSong(t.id)">
+                <td style="width: auto;height: auto" ><img style="width: 64px;height: 64px" src="{{t.album.images[0].url}}"></img></td>
+                <td style="text-align:center;vertical-align:middle;">{{t.song.name}}</td>
+                <td style="text-align:center;vertical-align:middle;"><span ng-repeat="a in t.song.artists">{{a.name}}, </span></td>
+                <td style="text-align:center;vertical-align:middle;">{{t.votes}}</td>
               </tr>
             </table>
           </div>
         </div>
       </div>
   </body>
+
+<script>
+
+    var loc_arr = window.location.href.split('/');
+    var room = loc_arr[loc_arr.length-1];
+
+    var socket = null;
+
+    var app = angular.module('myApp', []);
+
+
+
+    app.controller('myCtrl', function($scope){
+        $scope.searchTerm = '';
+        $scope.songs = [];
+        $scope.playlist = [];
+        $scope.name = 'Unknown';
+        $scope.trackMouseover = {};
+
+
+        $scope.setMouseover = function(track){
+            $scope.trackMouseover = track;
+        };
+
+        $scope.getPlaylist = function(){
+            $.ajax({
+                url: '/api/playlist/'+room,
+                type: 'GET',
+                dataType: 'json',
+                success: function(data){
+                    console.dir(data);
+                    $scope.playlist = data;
+                    $scope.$apply();
+                }
+            });
+        };
+
+        $scope.connectToWS = function(){
+            var socket = io('/clients');
+
+            socket.emit('join', room);
+
+            socket.on('playlist updated', function(data){
+                console.log('Server says that playlist has been updated. Pulling...');
+                $scope.getPlaylist();
+            })
+        }
+
+        $scope.setName = function(){
+            $.ajax({
+                url: '/api/search/'+$scope.searchTerm,
+                type: 'POST',
+                dataType: 'json',
+                success: function(data){
+
+                }
+            });
+        };
+
+        $scope.searchTracks = function(){
+
+            if($scope.searchTerm === ''){
+                $scope.songs = [];
+                $scope.$apply();
+            }else{
+                $.ajax({
+                    url: '/api/search/'+$scope.searchTerm,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(data){
+                        $scope.songs = data.tracks.items;
+                        $scope.$apply();
+                        console.log(data);
+                    }
+                });
+            }
+        };
+
+        $scope.connectToWS();
+        $scope.getPlaylist();
+    });
+
+
+</script>
 </html>

@@ -5,10 +5,27 @@ var hio = null;
 
 var rooms = [];
 
+var voteSong = function(roomKey, index, voter){
+    var room = getRoom(roomKey);
+
+    room.voteSong(index, voter);
+
+    cio.to(roomKey).emit('playlist updated');
+}
+
+var enqueueSong = function(roomKey, track){
+    var room = getRoom(roomKey);
+
+    room.enqueueSong(track);
+
+    cio.to(roomKey).emit('playlist updated');
+}
+
 var playSongInRoom = function(roomKey, track){
     var room = getRoom(roomKey);
 
-    room.getHost().emit('play song', JSON.stringify({track:track}));
+    var socket = room.getHost();
+    socket.emit('play song', JSON.stringify({track:track}));
 }
 
 var setClientChannel = function(_cio){
@@ -93,10 +110,14 @@ module.exports = {
     closeRoom: closeRoom,
     getAllRooms: null,
     getRoom: getRoom,
-    playSongInRoom: playSongInRoom
+    playSongInRoom: playSongInRoom,
+    enqueueSong:enqueueSong,
+    voteSong:voteSong
 }
 
+/*
 var newRoom = createRoom();
 
 rooms.push(newRoom);
 console.log("new room: " + newRoom.getKey());
+*/

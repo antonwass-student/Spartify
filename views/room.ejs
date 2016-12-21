@@ -61,12 +61,13 @@
             <table class="table table-striped table-bordered table-hover">
               <th style="width:30%;">Title</th>
               <th style="width:30%">Artist</th>
-              <th  style="width:10%">Votes</th>
-              <tr ng-repeat="t in playlist" ng-click="enqueueSong(t.uri)" ng-mouseover="setMouseover(t)">
-                <td>{{t.name}}</td>
-                <td><span ng-repeat="a in t.artists">{{a.name}}, </span></td>
-                <td>{{t.album.name}}</td>
-                <td><progress max="100" value="{{t.popularity}}"></progress></td>
+              <th style="width:10%">Duration</th>
+              <th style="width:10%">Votes</th>
+              <tr ng-repeat="t in playlist" ng-click="voteSong(t.id)">
+                <td>{{t.song.name}}</td>
+                <td><span ng-repeat="a in t.song.artists">{{a.name}}, </span></td>
+                <td>{{msToMMSS(t.song.duration_ms)}}</td>
+                <td>{{t.votes}}</td>
               </tr>
             </table>
           </div>
@@ -95,7 +96,37 @@
 
         $scope.setMouseover = function(track){
           $scope.trackMouseover = track;
-        }
+        };
+
+        $scope.voteSong = function(index){
+          $.ajax({
+            url: '/api/vote',
+            type: 'POST',
+            dataType: 'json',
+            success: function(data){
+              console.log(data.playlist);
+              $scope.playlist = data.playlist;
+              $scope.$apply();
+            },
+            data:{
+              room:room,
+              song_index:index
+            }
+          });
+        };
+
+        $scope.getPlaylist = function(){
+          $.ajax({
+            url: '/api/playlist/'+room,
+            type: 'GET',
+            dataType: 'json',
+            success: function(data){
+              console.dir(data);
+              $scope.playlist = data;
+              $scope.$apply();
+            }
+          });
+        };
 
 
         $scope.enqueueSong = function(track){
@@ -119,8 +150,9 @@
 
           socket.emit('join', room);
 
-          socket.on('news', function(data){
-            console.log('news: ' + data);
+          socket.on('playlist updated', function(data){
+            console.log('Server says that playlist has been updated. Pulling...');
+            $scope.getPlaylist();
           })
         }
 
@@ -171,6 +203,7 @@
 
 
         $scope.connectToWS();
+        $scope.getPlaylist();
       });
 
 

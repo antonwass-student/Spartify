@@ -10,7 +10,6 @@ hio.on('connection', function(socket){
 
     console.log('Host connected!');
     var room = RoomManager.createRoom(socket);
-
 });
 
 

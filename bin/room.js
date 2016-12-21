@@ -7,11 +7,12 @@ function Room(key, socket){
     this._socket = socket;
     this._spotifyApi = new SpotifyWebApi();
     this._playlist = [];
+    this._counter = 0;
 
 
-    //this.initSocket();
+    this.initSocket();
 
-    //socket.emit('welcome','');
+    socket.emit('welcome','');
 }
 
 method.initSocket = function () {
@@ -37,13 +38,52 @@ method.initSocket = function () {
         spotifyApi.setAccessToken(msg.access_token);
 
     });
+
+    socket.on('song ended', function(){
+        //var next_track = null;
+        //socket.emit('play song', next);
+    });
+};
+
+method.voteSong = function(id, voter){
+    var playlist = this._playlist;
+    console.log('VOTING SONG!');
+    playlist.some(function(item){
+        if(item.id == id){
+            if(item.voters.indexOf(voter)<0){
+                item.votes++;
+                item.voters.push(voter);
+                console.log('voted');
+            }else{
+                item.votes--;
+                item.voters.splice(item.voters.indexOf(voter), 1);
+                console.log('spliced');
+            }
+
+            playlist.sort(function(a,b){ var c = b.votes - a.votes; return c;});
+            console.log('sorting');
+            return true;
+        }
+    });
 };
 
 method.enqueueSong = function(song){
     var playlist = this._playlist;
 
-    playlist.push(song);
+    var trackObj = {
+        id:this._counter++,
+        song:song,
+        votes:0,
+        voters:[]
+    };
 
+    playlist.push(trackObj);
+
+    playlist.sort(function(a,b){ var c = b.votes - a.votes; return c;});
+};
+
+method.getPlaylist = function(){
+    return this._playlist;
 }
 
 method.getHost = function(){

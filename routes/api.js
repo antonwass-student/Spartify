@@ -27,15 +27,45 @@ router.get('/search/:songName', function (req, res, next) {
 
 router.post('/queue', function(req, res, next){
     var room_key = req.body.room;
-    var song = req.body.track;
-    var room = pr.getRoom(room_key);
+    var song_uri = req.body.track;
 
-    room.enqueueSong(song);
-    room.playSongInRoom(room, song);
+    var song_id = song_uri.substr(song_uri.lastIndexOf(':')+1,song_uri.length-1);
+
+    spotifyApi.getTrack(song_id).then(function(result){
+        pr.enqueueSong(room_key, result.body);
+        console.log('Song queued');
+    }, function(err){
+        throw err;
+    });
+
+
+    pr.playSongInRoom(room_key, song_uri);
+    console.log('song played');
 
     res.setHeader('Content-Type', 'application/json');
 
     res.send({response:'Song successfully added to queue'});
+});
+
+router.post('/vote', function(req, res, next){
+    var room_key = req.body.room;
+    var song_index = req.body.song_index;
+
+    console.log(room_key, song_index);
+
+    pr.voteSong(room_key, song_index, req.session.id);
+
+    res.end();
+});
+
+router.get('/playlist/:room', function(req, res, next){
+    var room_key = req.params.room;
+
+    var playlist = pr.getRoom(room_key).getPlaylist();
+
+    res.setHeader('Content-Type', 'application/json');
+
+    res.send(JSON.stringify(playlist));
 });
 
 

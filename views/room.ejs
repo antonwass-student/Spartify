@@ -59,7 +59,6 @@
           <!-- END Track showcase -->
 
           <div class="col-md-10 col-xs-12">
-
             <div class="row">
 
               <div class="col-md-6 col-xs-6">
@@ -79,7 +78,7 @@
                   <th style="width:10%">Duration</th>
                   <tr ng-repeat="t in songs" ng-click="enqueueSong(t.uri)" ng-mouseover="setMouseover(t)">
                     <td>{{t.name}}</td>
-                    <td><span ng-repeat="a in t.artists">{{a.name}}, </span></td>
+                    <td ><span ng-repeat="a in t.artists">{{a.name}}, </span></td>
                     <td><progress  style="width:100%;" max="100" value="{{t.popularity}}"></progress></td>
                     <td style="text-align:right;">{{msToMMSS(t.duration_ms)}}</td>
                   </tr>
